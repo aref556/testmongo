@@ -118,8 +118,8 @@ export class ApproveKeyService {
     }
 
     async getCountToApproveKey() {
-        const count = await this.MemberCollecction.countDocuments({flagrsa: 3});        console.log(count);
-        console.log(count);
+        const count = await this.MemberCollecction.countDocuments({flagrsa: 3});
+        // console.log(count);
         return count;
     }
 }
