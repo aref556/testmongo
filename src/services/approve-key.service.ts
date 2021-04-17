@@ -73,7 +73,20 @@ export class ApproveKeyService {
                 created: false,
                 updated: false,
             });
-            if (!memberItemUpdated) throw new BadRequestException('ไม่พบข้อมูลของผู้ใช้ที่ได้รับการอนุมัติ');
+            if (!memberItemUpdated) {
+                //เก็บ log file 
+                const data = ` เวลา ${new Date()} จาก {api/approve-key, GET} : ไม่มีผู้ใช้ที่ได้รับการอนุมัติ \n`;
+                f.open('log/rsalog.log', 'a', (err, fd) => {
+                    f.appendFile(fd, data, `utf8`, (err) => {
+                        f.close(fd, (err) => {
+                            if (err) throw err;
+                        });
+                        if (err) throw err;
+                    });
+                    if (err) throw err;
+                });
+                throw new BadRequestException('ไม่มีผู้ใช้ที่ได้รับการอนุมัติ');
+            }
             const test2 = await this.MemberCollecction.updateOne({ username: memberItemUpdated.username }, {
                 flagrsa: 4,
                 flagserver: "1",
@@ -118,7 +131,7 @@ export class ApproveKeyService {
     }
 
     async getCountToApproveKey() {
-        const count = await this.MemberCollecction.countDocuments({flagrsa: 3});
+        const count = await this.MemberCollecction.countDocuments({ flagrsa: 3 });
         // console.log(count);
         return count;
     }
