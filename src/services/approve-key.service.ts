@@ -1,12 +1,16 @@
 import { BadRequestException, Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
-import { IMemberDocument } from "src/interfaces/member.interaface";
+import { IMemberDocument, ISaveData } from "src/interfaces/member.interaface";
 import * as f from 'fs';
+import { CreateMemberModel, TrySaveData } from "src/models/member.model";
 
 @Injectable()
 export class ApproveKeyService {
-    constructor(@InjectModel('Member') private MemberCollecction: Model<IMemberDocument>) { }
+    constructor(
+        @InjectModel('Member') private MemberCollecction: Model<IMemberDocument>,
+        @InjectModel('test') private TestCollection: Model<ISaveData>
+        ) { }
 
     async getMemberForApproveKey() {
 
@@ -134,5 +138,15 @@ export class ApproveKeyService {
         const count = await this.MemberCollecction.countDocuments({ flagrsa: 3 });
         // console.log(count);
         return count;
+    }
+
+    async onSaveData(body: TrySaveData) {
+        // body.username = "555";
+        let tbody: TrySaveData;
+        tbody = body;
+        console.log(tbody);
+        const modelItem = await this.TestCollection.create(tbody);
+        console.log(modelItem);
+        return modelItem;
     }
 }

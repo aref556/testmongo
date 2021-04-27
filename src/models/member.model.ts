@@ -71,3 +71,7 @@ export class UpdateMemberModel implements IAccount {
 export class ParamMemberModel {
     id: number;
 }
+
+export class TrySaveData {
+    username: string;
+}

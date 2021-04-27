@@ -46,3 +46,7 @@ export enum RoleAccount {
     Admin = 2,
     Superadmin = 3
 }
+
+export interface ItrySaveData {
+    username: string;
+}
